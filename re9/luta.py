@@ -10,7 +10,7 @@ from cores import Cores
 class Luta():
     
 
-    
+
     def __str__(self):
         return (f'Nome: {self.nome} \nEquipamento: {self.equipamento} \nDano: {self.dano} \nVida: {self.vida} \nEspecial: {self.especial}')
 
@@ -18,7 +18,6 @@ class Luta():
         input('ENTER para voltar')
         os.system('cls')
         Luta.escolher_personagem(Luta)
-    
 
     def escolher_personagem(self):
         try:
@@ -46,7 +45,7 @@ class Luta():
             print(self.personagem_escolhido, '\n')  
         except: print('Escolha uma opção válida')
     
-    def escolher_inimigo(self):     
+    def escolher_inimigo(self):
         numero_inimigo = int(random.randint(1,12))
         inimigos = {
             1: self.nemesis,
@@ -62,23 +61,22 @@ class Luta():
             11:self.inimigos_1,
             12:self.inimigos_1
             }
-        self.personagem_escolhido.__dict__.update(inimigos[numero_inimigo].__dict__)
+        self.inimigo_escolhido.__dict__.update(inimigos[numero_inimigo].__dict__)
         print(f'{self.inimigo_escolhido.nome} Vai te atacar!')
-
 
     def especial(self):
 
             if self.personagem_escolhido.nome == self.ethan.nome:
                     self.personagem_escolhido.vida = (self.personagem_escolhido.vida + int(15))
                     print(f'{Cores.AZUL}Você regenerou 15 de vida\n{Cores.RESET}')
-            #Leon        
+            #Leon
             elif self.personagem_escolhido.nome == self.leon_kennedy.nome:
                     self.personagem_escolhido.vida = (self.personagem_escolhido.vida + self.inimigo_escolhido.dano)
                     print(f'{Cores.AZUL}Leon deu um  mortal e desviou do ataque\n{Cores.RESET}')
-            #Chris        
+            #Chris
             elif self.personagem_escolhido.nome == self.chris_redfield.nome:
                 chance = 12
-            #Ada    
+            #Ada
             elif self.personagem_escolhido.nome == self.ada_wong.nome:
 
                     self.personagem_escolhido.dano = (self.personagem_escolhido.dano + self.personagem_escolhido.dano)
@@ -120,7 +118,7 @@ class Luta():
 
     def drop(self):
         chance = random.randint(1,20)
-        if chance > 15:
+        if chance > 0:
             consumiveis = {
             1: 'Erva verde',
             2: 'Erva amarela',
@@ -140,18 +138,28 @@ class Luta():
 4- Estamina
 5- Barra de proteina
 '''))
-        if menu == 1 and len(self.personagem_escolhido.inventario('Erva verde') >= 1):
-            Inventario.erva_verde()
-        elif menu == 2 and len(self.personagem_escolhido.inventario('Erva amarela') >= 1):
-            Inventario.erva_amarela()
-        elif menu == 3 and len(self.personagem_escolhido.inventario('Spray') >= 1):    
-            Inventario.spray()
-        elif menu == 4 and len(self.personagem_escolhido.inventario('Estamina') >= 1):
-            Inventario.estamina()
-        elif menu == 5 and len(self.personagem_escolhido.inventario('Barra de proteina') >= 1):
-             Inventario.barra_proteina()
-        else:
-             print('')     
+        for item in self.personagem_escolhido.inventario:
+            if menu == 1 and item == 'Erva verde':
+                
+                Inventario.erva_verde()
+
+            elif menu == 2 and item == 'Erva amarela':
+                Inventario.erva_amarela()
+
+            elif menu == 3 and item == 'Spray':    
+                Inventario.spray()
+
+
+            elif menu == 4 and item == 'Estamina':
+                Inventario.estamina()
+
+
+            elif menu == 5 and item == 'Barra de proteina':
+                Inventario.barra_proteina()
+
+
+            else:
+                print('')     
     def ver_invetario(self):
          print(self.personagem_escolhido.inventario)
         
@@ -173,46 +181,36 @@ class Luta():
                     time.sleep(0.5)
                 elif especial > 15:
                     Luta.especial(Luta)
+                    Luta.ataque_normal(Luta)
                 else:
                     Luta.ataque_normal(Luta)
-                    time.sleep(0.5)
+                    
                 Luta.ataque_inimigo(Luta)
             if self.inimigo_escolhido.vida <= 0:
                 print(f'{Cores.VERDE}Você Ganhou! 👌{Cores.RESET}\n')
+                os.system('cls')
                 Luta.drop(Luta)
-                time.sleep(0.5)
-                Inimigo.tela_de_morte(self.inimigo_escolhido)
-                time.sleep(0.5)
-                Herois.ganhar_experiencia
-                time.sleep(0.5)
-                Herois.subir_level
-                time.sleep(0.5)
-                Herois.exibir_status(self.personagem_escolhido, vida_personagem)
-                time.sleep(0.5)
-                Luta.escolher_inimigo(Luta)
+                Luta.escolher_inimigo(Luta)               
             if self.personagem_escolhido.vida <= 0:
-                print(f'{Cores.VERMELHO}Você Perdeu! 😢{Cores.RESET}\n')
-                time.sleep(0.5)
-                Herois.tela_de_morte(self.personagem_escolhido)
-                time.sleep(0.5)
+                print(f'{Cores.VERMELHO}Você Perdeu! 😢{Cores.RESET}\n')          
                 Luta.escolher_personagem(Luta)
             elif opcoes == 2:
-                 Luta.usar_consumivel(Luta)    
-
+                 os.system('cls')
+                 Luta.usar_consumivel(Luta)
 
     def menu():
         input('''
 RPG Resident evil
 
-                            
+
 ENTER para iniciar uma nova luta
 ''')
         os.system('cls')
         Luta.luta(Luta)
-            
-    
-    
-       
+
+
+
+
     nemesis = Inimigo('Nemesis','Lança míssil', 25, 150 , 0, 0)
     mr_x = Inimigo('Mister X','Soco', 30, 140 , 0, 0)
     #-

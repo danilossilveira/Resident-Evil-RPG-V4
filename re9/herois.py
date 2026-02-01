@@ -1,4 +1,5 @@
 
+from cores import Cores
 from personagem import Personagem
 
 class Herois(Personagem):
@@ -23,7 +24,7 @@ class Herois(Personagem):
 
     def tela_de_morte(self,kill_monstro,kill_boss):
         print(f'''
-          {'\033[91m'}Ꭹ𝔬𝔲 𝔞𝔯𝔢 𝔡𝔢𝔞𝔡!{'\033[0m'}
+          {Cores.VERMELHO}Ꭹ𝔬𝔲 𝔞𝔯𝔢 𝔡𝔢𝔞𝔡!{Cores.RESET}
               
         Nivel alcançado: {self.nivel}
         Mosntros mortos: {kill_monstro}
@@ -33,7 +34,7 @@ class Herois(Personagem):
     def ganhar_experiencia(self, nivel_animigo):
         XP_ganho = nivel_animigo * 10
         self.experiencia += XP_ganho
-        print(f'{'\033[92m'}Você recebeu {XP_ganho} de experiencia{'\033[0m'}')
+        print(f'{Cores.VERMELHO}Você recebeu {XP_ganho} de experiencia{Cores.RESET}')
 
     def subir_level(self):
         XP_necessario = 1000 + (self.nivel * 200)

@@ -1,9 +1,8 @@
-
 from cores import Cores
 from luta import Luta
 class Inventario():
 
-    def erva_verde(self):
+    def erva_verde():
         erva = Luta.personagem_escolhido.vida
         
         if Luta.personagem_escolhido.vida > erva - 30:
