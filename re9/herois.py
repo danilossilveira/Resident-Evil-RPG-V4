@@ -1,3 +1,4 @@
+import time
 
 from cores import Cores
 from personagem import Personagem
@@ -20,21 +21,24 @@ class Herois(Personagem):
         print(f'|♡ Vida {self.vida}/{vida_maxima}')
         print(f'|☆ Nivel {self.nivel}')
         print(f'|♦ Experiência {self.experiencia}/{XP_necessario}')
-        input('Precione a tecla "Enter ⏎" para continuar...')
+        input('\nPrecione a tecla "Enter ⏎" para continuar...\n')
+        time.sleep(0.5)
 
     def tela_de_morte(self,kill_monstro,kill_boss):
         print(f'''
           {Cores.VERMELHO}Ꭹ𝔬𝔲 𝔞𝔯𝔢 𝔡𝔢𝔞𝔡!{Cores.RESET}
               
         Nivel alcançado: {self.nivel}
-        Mosntros mortos: {kill_monstro}
+        Monstros mortos: {kill_monstro}
         Chefes mortos: {kill_boss}
         ''')
+        time.sleep(0.5)
 
     def ganhar_experiencia(self, nivel_animigo):
-        XP_ganho = nivel_animigo * 10
+        XP_ganho = (nivel_animigo * 10)
         self.experiencia += XP_ganho
         print(f'{Cores.VERMELHO}Você recebeu {XP_ganho} de experiencia{Cores.RESET}')
+        time.sleep(0.5)
 
     def subir_level(self):
         XP_necessario = 1000 + (self.nivel * 200)
@@ -44,3 +48,5 @@ class Herois(Personagem):
             self.vida = self.vida + (self.vida * 0.1)
             self.experiencia -= XP_necessario
             print(f'{'\033[92m'}Parabéns! {self.nome} subiu para o nível {self.nivel}!{'\033[0m'}')
+            time.sleep(0.5)
+            

@@ -30,7 +30,7 @@ class Luta():
                 6: self.hunk
                     }
             escolha = int(input('''Escolha seu personagem
-        1- Leon
+        1-Leon
         2-Chris
         3-Ethan
         4-Ada
@@ -105,15 +105,21 @@ class Luta():
     def dano_critico(self):
             dano_critico = 0
             dano_critico = (self.personagem_escolhido.dano + self.personagem_escolhido.dano * 1.5)
+            if self.inimigo_escolhido.vida < 0:
+                self.inimigo_escolhido.vida = 0
             self.inimigo_escolhido.vida = (self.inimigo_escolhido.vida - dano_critico)
             print(f'{Cores.VERMELHO}CRITICO🔥! Você deu {dano_critico} de dano no {self.inimigo_escolhido.nome}, e ele ficou com {self.inimigo_escolhido.vida} de vida{Cores.RESET}\n')
             
     def ataque_normal(self):                 
         self.inimigo_escolhido.vida = (self.inimigo_escolhido.vida - self.personagem_escolhido.dano)
+        if self.inimigo_escolhido.vida < 0:
+            self.inimigo_escolhido.vida = 0
         print(f'Você atacou o {self.inimigo_escolhido.nome}, e ele ficou com {self.inimigo_escolhido.vida} de vida\n') if self.inimigo_escolhido.vida > 50 else print(f'O inimigo ficou com apenas {self.inimigo_escolhido.vida} de vida, você está quase\n')               
 
     def ataque_inimigo(self):
         self.personagem_escolhido.vida = (self.personagem_escolhido.vida - self.inimigo_escolhido.dano)
+        if self.personagem_escolhido.vida < 0:
+            self.personagem_escolhido.vida = 0
         print(f'{self.inimigo_escolhido.nome} te atacou! você ficou com {self.personagem_escolhido.vida} de vida\n')
 
     def drop(self):
@@ -167,10 +173,11 @@ class Luta():
         Luta.escolher_personagem(Luta)
         Luta.escolher_inimigo(Luta)
         vida_personagem = self.personagem_escolhido.vida
+        contador_kills = 0
         
         while True:
             
-            opcoes = int(input('1-atacar\n2-Usar Consumivel'))
+            opcoes = int(input('1-atacar\n2-Usar Consumivel\n'))
             if opcoes == 1:
                 os.system('cls')
                 critico = random.randint(1,20) 
@@ -187,12 +194,17 @@ class Luta():
                     
                 Luta.ataque_inimigo(Luta)
             if self.inimigo_escolhido.vida <= 0:
+                contador_kills += 1  
                 print(f'{Cores.VERDE}Você Ganhou! 👌{Cores.RESET}\n')
                 os.system('cls')
+                Inimigo.tela_de_morte(self.inimigo_escolhido)
                 Luta.drop(Luta)
-                Luta.escolher_inimigo(Luta)               
+                Herois.ganhar_experiencia(self.personagem_escolhido,self.inimigo_escolhido.nivel)
+                Herois.subir_level(self.personagem_escolhido)
+                Herois.exibir_status(self.personagem_escolhido,vida_personagem)
+                Luta.escolher_inimigo(Luta)           
             if self.personagem_escolhido.vida <= 0:
-                print(f'{Cores.VERMELHO}Você Perdeu! 😢{Cores.RESET}\n')          
+                Herois.tela_de_morte(self.personagem_escolhido,contador_kills,0)          
                 Luta.escolher_personagem(Luta)
             elif opcoes == 2:
                  os.system('cls')
@@ -211,8 +223,8 @@ ENTER para iniciar uma nova luta
 
 
 
-    nemesis = Inimigo('Nemesis','Lança míssil', 25, 150 , 0, 0)
-    mr_x = Inimigo('Mister X','Soco', 30, 140 , 0, 0)
+    nemesis = Inimigo('Nemesis','Lança míssil', 25, 150 , 0)
+    mr_x = Inimigo('Mister X','Soco', 30, 140 , 0)
     #-
     leon_kennedy = Herois('Leon', 'Pistola',15,150, 'Desvia de ataques', 0, 0)
     chris_redfield = Herois('Chirs', 'Sub-metralhadora',17 ,135, 'Chance de crítico aumenta', 0, 0)
@@ -226,11 +238,11 @@ ENTER para iniciar uma nova luta
     rebecca_chambers = Herois('Rebecca Chambers', 'Rifle', 13, 125, '', 0, 0)    
     wesker = Herois('Wesker', 'Katana', 19, 180, '', 0, 0)
     #-
-    inimigos_1 = Inimigo('Walker','Mão',10, 60, 0, 0)
-    inimigos_2 = Inimigo('Cultista','Foice',15, 80, 0, 0)
-    inimigos_3 = Inimigo('Lobo','Mordida',17, 70, 0, 0) 
-    inimigo_escolhido = Inimigo('a','a',0, 0,0, 0)
-    inimigo_aleatorio = Inimigo('a','a',0,0,0, 0)
+    inimigos_1 = Inimigo('Walker','Mão',10, 60, 0)
+    inimigos_2 = Inimigo('Cultista','Foice',15, 80, 0)
+    inimigos_3 = Inimigo('Lobo','Mordida',17, 70, 0) 
+    inimigo_escolhido = Inimigo('a','a',0, 0,0)
+    inimigo_aleatorio = Inimigo('a','a',0,0,0)
     
 def main():
     Luta.luta(Luta)
