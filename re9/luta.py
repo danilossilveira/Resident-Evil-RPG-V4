@@ -14,7 +14,7 @@ class Luta():
     def __str__(self):
         return (f'Nome: {self.nome} \nEquipamento: {self.equipamento} \nDano: {self.dano} \nVida: {self.vida} \nEspecial: {self.especial}')
 
-    def voltar_menu():        
+    def voltar_menu():
         input('ENTER para voltar')
         os.system('cls')
         Luta.escolher_personagem(Luta)
@@ -131,39 +131,52 @@ class Luta():
 
     def drop(self):
         
-        chance = random.randint(1,20)
-        if chance > 0:
-            consumiveis = {
-            1: 'Erva verde',
-            2: 'Erva amarela',
-            3: 'Spray',
-            4: 'Estamina',
-            5: 'Barre de proteina'
-        } 
-            drop = random.randint(1,5)
-            self.personagem_escolhido.inventario.append(consumiveis[drop])
-            print(f' O {self.inimigo_escolhido.nome} dropou um {consumiveis[drop]}')         
+        consumiveis = {
+        1: 'Erva verde',
+        2: 'Erva amarela',
+        3: 'Spray',
+        4: 'Estamina',
+        5: 'Barre de proteina'
+    } 
+        drop = random.randint(1,5)
+        self.personagem_escolhido.inventario.append(consumiveis[drop])
+        print(f' O {self.inimigo_escolhido.nome} dropou um {consumiveis[drop]}')      
+
+
+
+
     def usar_consumivel(self):
         from inventario import Inventario
-
-        for i,consumivel in enumerate(self.personagem_escolhido.inventario, start=1):
-            print(f'{i}- {consumivel} - Possui: {Counter(self.personagem_escolhido.inventario)}') 
+        menu = int(input(f'''
+Seu inventario:
+1- Erva verde - Você possui: {self.personagem_escolhido.inventario.count('Erva verde')}                             
+2- Erva amarela - Você possui: {self.personagem_escolhido.inventario.count('Erva amarela')}
+3- Spray - Você possui: {self.personagem_escolhido.inventario.count('Spray')}
+4- Estamina - Você possui: {self.personagem_escolhido.inventario.count('Estamina')}
+5- Barra de proteína - Você possui: {self.personagem_escolhido.inventario.count('Barra de proteína')}
+'''))
                                         
-        menu = int(input('Inventario'))
+        
                 
-        if menu == 1:
+        if menu == 1 and self.personagem_escolhido.inventario.count('Erva verde') >= 1:
            Inventario.erva_verde(self)
+           self.personagem_escolhido.inventario.remove('Erva verde')
            
-        elif menu == 2:
+        elif menu == 2 and self.personagem_escolhido.inventario.count('Erva amarela') >= 1:
+            
             Inventario.erva_amarela(self)
-        elif menu == 3:    
+            self.personagem_escolhido.inventario.remove('Erva amarela')
+        elif menu == 3 and self.personagem_escolhido.inventario.count('Spray') >= 1:    
             Inventario.spray(self)
-        elif menu == 4:
+            self.personagem_escolhido.inventario.remove('Spray')
+        elif menu == 4 and self.personagem_escolhido.inventario.count('Estamina') >= 1:
             Luta.dano_critico(Luta)
-        elif menu == 5:
+            self.personagem_escolhido.inventario.remove('Estamina')
+        elif menu == 5 and self.personagem_escolhido.inventario.count('Barra de proteína') >= 1:
             Luta.especial(Luta)
+            self.personagem_escolhido.inventario.remove('Barra de proteína')
         else:
-                print('Não funcionou')     
+                print('Você não possui este consumivel')     
 
     
          
