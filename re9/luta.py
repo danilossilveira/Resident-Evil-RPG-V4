@@ -1,15 +1,15 @@
 import random
 import time
 import os
+from collections import Counter
 from inimigo import Inimigo
 from herois import Herois
 from cores import Cores
 
 
 
-class Luta():
-    
 
+class Luta():
 
     def __str__(self):
         return (f'Nome: {self.nome} \nEquipamento: {self.equipamento} \nDano: {self.dano} \nVida: {self.vida} \nEspecial: {self.especial}')
@@ -122,7 +122,15 @@ class Luta():
             self.personagem_escolhido.vida = 0
         print(f'{self.inimigo_escolhido.nome} te atacou! você ficou com {self.personagem_escolhido.vida} de vida\n')
 
+
+
+
+
+
+
+
     def drop(self):
+        
         chance = random.randint(1,20)
         if chance > 0:
             consumiveis = {
@@ -137,43 +145,34 @@ class Luta():
             print(f' O {self.inimigo_escolhido.nome} dropou um {consumiveis[drop]}')         
     def usar_consumivel(self):
         from inventario import Inventario
-        menu = int(input('''
-1- Erva verde
-2- Erva amarela
-3- Spray
-4- Estamina
-5- Barra de proteina
-'''))
-        for item in self.personagem_escolhido.inventario:
-            if menu == 1 and item == 'Erva verde':
+
+        for i,consumivel in enumerate(self.personagem_escolhido.inventario, start=1):
+            print(f'{i}- {consumivel} - Possui: {Counter(self.personagem_escolhido.inventario)}') 
+                                        
+        menu = int(input('Inventario'))
                 
-                Inventario.erva_verde()
+        if menu == 1:
+           Inventario.erva_verde(self)
+           
+        elif menu == 2:
+            Inventario.erva_amarela(self)
+        elif menu == 3:    
+            Inventario.spray(self)
+        elif menu == 4:
+            Luta.dano_critico(Luta)
+        elif menu == 5:
+            Luta.especial(Luta)
+        else:
+                print('Não funcionou')     
 
-            elif menu == 2 and item == 'Erva amarela':
-                Inventario.erva_amarela()
-
-            elif menu == 3 and item == 'Spray':    
-                Inventario.spray()
-
-
-            elif menu == 4 and item == 'Estamina':
-                Inventario.estamina()
-
-
-            elif menu == 5 and item == 'Barra de proteina':
-                Inventario.barra_proteina()
-
-
-            else:
-                print('')     
-    def ver_invetario(self):
-         print(self.personagem_escolhido.inventario)
+    
+         
         
     def luta(self):
         Luta.escolher_personagem(Luta)
         Luta.escolher_inimigo(Luta)
         vida_personagem = self.personagem_escolhido.vida
-        contador_kills = 0
+        contador_kills = []
         
         while True:
             
@@ -194,17 +193,16 @@ class Luta():
                     
                 Luta.ataque_inimigo(Luta)
             if self.inimigo_escolhido.vida <= 0:
-                contador_kills += 1  
                 print(f'{Cores.VERDE}Você Ganhou! 👌{Cores.RESET}\n')
-                os.system('cls')
-                Inimigo.tela_de_morte(self.inimigo_escolhido)
+                contador_kills.append(Herois.contador_kills(self.inimigo_escolhido.tipo))
+                
                 Luta.drop(Luta)
                 Herois.ganhar_experiencia(self.personagem_escolhido,self.inimigo_escolhido.nivel)
                 Herois.subir_level(self.personagem_escolhido)
                 Herois.exibir_status(self.personagem_escolhido,vida_personagem)
                 Luta.escolher_inimigo(Luta)           
             if self.personagem_escolhido.vida <= 0:
-                Herois.tela_de_morte(self.personagem_escolhido,contador_kills,0)          
+                Herois.tela_de_morte(self.personagem_escolhido,contador_kills)          
                 Luta.escolher_personagem(Luta)
             elif opcoes == 2:
                  os.system('cls')
@@ -223,8 +221,8 @@ ENTER para iniciar uma nova luta
 
 
 
-    nemesis = Inimigo('Nemesis','Lança míssil', 25, 150 , 0)
-    mr_x = Inimigo('Mister X','Soco', 30, 140 , 0)
+    nemesis = Inimigo('Nemesis','Lança míssil', 25, 150 ,'boss', 0)
+    mr_x = Inimigo('Mister X','Soco', 30, 140,'boss' , 0)
     #-
     leon_kennedy = Herois('Leon', 'Pistola',15,150, 'Desvia de ataques', 0, 0)
     chris_redfield = Herois('Chirs', 'Sub-metralhadora',17 ,135, 'Chance de crítico aumenta', 0, 0)
@@ -238,11 +236,11 @@ ENTER para iniciar uma nova luta
     rebecca_chambers = Herois('Rebecca Chambers', 'Rifle', 13, 125, '', 0, 0)    
     wesker = Herois('Wesker', 'Katana', 19, 180, '', 0, 0)
     #-
-    inimigos_1 = Inimigo('Walker','Mão',10, 60, 0)
-    inimigos_2 = Inimigo('Cultista','Foice',15, 80, 0)
-    inimigos_3 = Inimigo('Lobo','Mordida',17, 70, 0) 
-    inimigo_escolhido = Inimigo('a','a',0, 0,0)
-    inimigo_aleatorio = Inimigo('a','a',0,0,0)
+    inimigos_1 = Inimigo('Walker','Mão',10, 60,'normal', 0)
+    inimigos_2 = Inimigo('Cultista','Foice',15, 80,'normal', 0)
+    inimigos_3 = Inimigo('Lobo','Mordida',17, 70,'normal', 0) 
+    inimigo_escolhido = Inimigo('a','a',0, 0,'a',0)
+    inimigo_aleatorio = Inimigo('a','a',0,0,'a',0)
     
 def main():
     Luta.luta(Luta)

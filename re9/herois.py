@@ -1,20 +1,19 @@
 import time
-
+from collections import Counter
 from cores import Cores
 from personagem import Personagem
 
 class Herois(Personagem):
-    inventario = []
+    
     def __init__(self, nome, equipamento, dano,vida,especial,nivel,experiencia):
         super().__init__(nome,equipamento,dano,vida,nivel)
         self.especial = especial
         self.experiencia = experiencia
-        Herois.inventario.append(self)
-        
+        self.inventario = ['Erva verde','Erva amarela','Spray','Estamina','Barra de proteína']
 
     def __str__(self):
-        for i in range(len(self.inventario)):
-            return f'{i}- {self.inventario}'
+        return (f'Nome: {self.nome} \nEquipamento: {self.equipamento} \nDano: {self.dano} \nVida: {self.vida} \nEspecial: {self.especial}')    
+
 
     def exibir_status(self,vida_maxima):
         XP_necessario = 1000 + (self.nivel * 200)
@@ -24,18 +23,14 @@ class Herois(Personagem):
         input('\nPrecione a tecla "Enter ⏎" para continuar...\n')
         time.sleep(0.5)
 
-    def tela_de_morte(self,kill_monstro,kill_boss):
-        print(f'''
-          {Cores.VERMELHO}Ꭹ𝔬𝔲 𝔞𝔯𝔢 𝔡𝔢𝔞𝔡!{Cores.RESET}
-              
-        Nivel alcançado: {self.nivel}
-        Monstros mortos: {kill_monstro}
-        Chefes mortos: {kill_boss}
-        ''')
-        time.sleep(0.5)
+    def contador_kills(tipo_inimigo):
+        if tipo_inimigo == 'normal':
+            return 'n'
+        elif tipo_inimigo == 'boss':
+            return 'b'   
 
     def ganhar_experiencia(self, nivel_animigo):
-        XP_ganho = (nivel_animigo * 10)
+        XP_ganho = (nivel_animigo * 50)
         self.experiencia += XP_ganho
         print(f'{Cores.VERMELHO}Você recebeu {XP_ganho} de experiencia{Cores.RESET}')
         time.sleep(0.5)
@@ -49,4 +44,22 @@ class Herois(Personagem):
             self.experiencia -= XP_necessario
             print(f'{'\033[92m'}Parabéns! {self.nome} subiu para o nível {self.nivel}!{'\033[0m'}')
             time.sleep(0.5)
+
+    def tela_de_morte(self,contador_kills): 
+        kill_monstro = 0
+        kill_boss = 0
+        for contador in contador_kills:
+            if contador == 'n':
+                kill_monstro += 1
+                
+            elif contador == 'b':
+                kill_boss += 1
+        print(f'''
+          {Cores.VERMELHO}Ꭹ𝔬𝔲 𝔞𝔯𝔢 𝔡𝔢𝔞𝔡!{Cores.RESET}
+              
+        Nivel alcançado: {self.nivel}
+        Monstros mortos: {kill_monstro}
+        Chefes mortos: {kill_boss}
+        ''')
+        time.sleep(0.5)
             

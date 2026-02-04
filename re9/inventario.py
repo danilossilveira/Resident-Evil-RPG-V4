@@ -1,32 +1,31 @@
 from cores import Cores
 from luta import Luta
-class Inventario():
+class Inventario(Luta):
 
-    def erva_verde():
-        erva = Luta.personagem_escolhido.vida
+    def erva_verde(self):
         
-        if Luta.personagem_escolhido.vida > erva - 30:
-            Luta.personagem_escolhido.vida = erva
-            
-            print(f'{Cores.AMARELO}vida recuperada no máximo! \nVida: {Luta.personagem_escolhido.vida}{Cores.RESET}')
-        else:
-            Luta.personagem_escolhido.vida + 30    
-            print(f'{Cores.AMARELO}vida recuperada! \nVida: {Luta.personagem_escolhido.vida}{Cores.RESET} ')
+        self.personagem_escolhido.vida = (self.personagem_escolhido.vida + 30)   
+        print(f'{Cores.AMARELO}vida recuperada! \nVida: {self.personagem_escolhido.vida}{Cores.RESET} ')
 
-    def erva_amarela():
-        Luta.personagem_escolhido.vida + 30
+    def erva_amarela(self):
+        self.personagem_escolhido.vida =  (self.personagem_escolhido.vida + 30)
+        print(f'Nova vida: {self.personagem_escolhido.vida}')
 
-    def spray():
-        spray = Luta.personagem_escolhido.vida
-        if Luta.personagem_escolhido.vida > spray - 30:
-            Luta.personagem_escolhido.vida = spray
-            print(f'{Cores.AMARELO}vida recuperada no máximo! \nVida: {Luta.personagem_escolhido.vida}{Cores.RESET}')
-        else:
-            Luta.personagem_escolhido.vida + 60
-            print(f'{Cores.AMARELO}vida recuperada! \nVida: {Luta.personagem_escolhido.vida}{Cores.RESET}')
+    def spray(self):
+        self.personagem_escolhido.vida = (self.personagem_escolhido.vida + 60)   
+        print(f'{Cores.AMARELO}vida recuperada! \nVida: {self.personagem_escolhido.vida}{Cores.RESET} ')
 
-    def estamina():
+
+
+
+
+
+
+
+    def estamina(self):
         Luta.dano_critico(Luta)
+                                #A gente tem que polir o jogo antes, arrumar todas as strings e tratar todos os erros
+                                
         
     def barra_proteina():
         Luta.especial(Luta)

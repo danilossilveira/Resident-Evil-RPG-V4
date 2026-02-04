@@ -4,11 +4,14 @@ import time
 from personagem import Personagem
 
 class Inimigo(Personagem):
-    def __init__(self, nome, equipamento, dano,vida,nivel):
+    def __init__(self, nome, equipamento, dano,vida,tipo,nivel = int):
         super().__init__(nome,equipamento,dano, vida,nivel)
+        self.tipo = tipo
         self.nivel = random.randint(1,10)
-        self.dano = (dano + (self.nivel * 2))
-        self.vida = (vida + (self.nivel * 5))
+        self.dano = 20
+                        #(dano + (self.nivel * 4))
+        self.vida = 50
+                        #(vida + (self.nivel * 2))
     
     def __str__(self):
         return f'{self.nivel} | {self.dano} | {self.vida}'
