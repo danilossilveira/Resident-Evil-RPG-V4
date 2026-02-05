@@ -1,5 +1,6 @@
 import time
-from collections import Counter
+import random
+
 from cores import Cores
 from personagem import Personagem
 
@@ -9,7 +10,7 @@ class Herois(Personagem):
         super().__init__(nome,equipamento,dano,vida,nivel)
         self.especial = especial
         self.experiencia = experiencia
-        self.inventario = ['Erva verde','Erva amarela','Spray','Estamina','Barra de proteína']
+        self.inventario = ['Erva verde','Erva amarela','Spray','Estamina','Barra de proteína','Granada de mão' ,'Granada de luz','Carregador estendido']
 
     def __str__(self):
         return (f'''
@@ -25,8 +26,9 @@ class Herois(Personagem):
 
 
     def exibir_status(self,vida_maxima):
+        vida = int(vida_maxima)
         XP_necessario = 1000 + (self.nivel * 200)
-        print(f'|♡ Vida {self.vida}/{vida_maxima}')
+        print(f'|♡ Vida {round(self.vida,1)}/{vida}')
         print(f'|☆ Nivel {self.nivel}')
         print(f'|♦ Experiência {self.experiencia}/{XP_necessario}')
         input('\nPrecione a tecla "Enter ⏎" para continuar...\n')
@@ -71,7 +73,3 @@ class Herois(Personagem):
         Chefes mortos: {kill_boss}
         ''')
         time.sleep(0.5)
-
-
-
-        

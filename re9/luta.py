@@ -6,9 +6,6 @@ from inimigo import Inimigo
 from herois import Herois
 from cores import Cores
 
-
-
-
 class Luta():
 
     def __str__(self):
@@ -28,7 +25,8 @@ class Luta():
                 3: self.ethan,
                 4: self.ada_wong,
                 5: self.jill_valentine,
-                6: self.hunk
+                6: self.hunk,
+                7: self.wesker
                     }
             escolha = int(input('''
  ╔══════════════════════════════════════════╗
@@ -36,6 +34,7 @@ class Luta():
  ╠══════════════════════════════════════════╣
  ║  [1] Leon    [2] Chris    [3] Ethan      ║
  ║  [4] Ada     [5] Jill     [6] Hunk       ║
+ ║  [7] Wesker                              ║
  ╚══════════════════════════════════════════╝
         \n'''))
             if escolha not in personagens:
@@ -64,7 +63,7 @@ class Luta():
             12:self.inimigos_1
             }
         self.inimigo_escolhido.__dict__.update(inimigos[numero_inimigo].__dict__)
-        print(f' ⚠️  {self.inimigo_escolhido.nome} VAI ATACAR! \n')
+        print(f' ⚠️  {self.inimigo_escolhido.nome} LEVEL({self.inimigo_escolhido.nivel}) VAI ATACAR! \n')
 
     def especial(self):
 
@@ -104,31 +103,46 @@ class Luta():
                     self.personagem_escolhido.vida.dano = 19
                 else:
                     self.personagem_escolhido.dano = 50   
-                    print(f'{Cores.AZUL}DANO EXTRA\n{Cores.RESET}')        
+                    print(f'{Cores.AZUL}DANO EXTRA\n{Cores.RESET}') 
+                           
+            elif self.personagem_escolhido.nome == self.wesker.nome:
+                self.inimigo_escolhido.vida = (self.inimigo_escolhido.vida - 70)
+                print(f'{Cores.AZUL} Ataque vertical {Cores.RESET}')
+                time.sleep(0.5)
+                print(f'{Cores.AZUL} Ataque horizontal {Cores.RESET}')
+                time.sleep(0.5)
+                print(f'{Cores.AZUL} Ataque transversal {Cores.RESET}')
 
+                
     def dano_critico(self):
             dano_critico = 0
-            dano_critico = (self.personagem_escolhido.dano + self.personagem_escolhido.dano * 1.5)
+            dano_critico = round((self.personagem_escolhido.dano + self.personagem_escolhido.dano * 1.5),1)
             if self.inimigo_escolhido.vida < 0:
                 self.inimigo_escolhido.vida = 0
             self.inimigo_escolhido.vida = (self.inimigo_escolhido.vida - dano_critico)
             print(f'{Cores.VERMELHO}CRITICO🔥! Você deu {dano_critico} de dano no {self.inimigo_escolhido.nome}. Ele ficou com {self.inimigo_escolhido.vida} de vida{Cores.RESET}\n')
             barra_inimigo = "█" * int(self.inimigo_escolhido.vida // 5) + "░" * int((50 - self.inimigo_escolhido.vida) // 5)
             print(f"\n{self.inimigo_escolhido.nome}: {self.inimigo_escolhido.vida:>4} HP |{barra_inimigo}|")
-    def ataque_normal(self):                 
-        self.inimigo_escolhido.vida = (self.inimigo_escolhido.vida - self.personagem_escolhido.dano)
+   
+    def ataque_normal(self,modificador_dano):               
+        self.inimigo_escolhido.vida = (self.inimigo_escolhido.vida - (self.personagem_escolhido.dano * modificador_dano))
         if self.inimigo_escolhido.vida < 0:
             self.inimigo_escolhido.vida = 0
         print(f'Você atacou o {self.inimigo_escolhido.nome}\n')               
         barra_inimigo = "█" * int(self.inimigo_escolhido.vida // 5) + "░" * int((50 - self.inimigo_escolhido.vida) // 5)
         print(f"\n{self.inimigo_escolhido.nome}: {self.inimigo_escolhido.vida:>4} HP |{barra_inimigo}|")
+    def barra_vida(self, nome, vida, inimigo):
+        print(f'{inimigo} te atacou! você ficou com {vida} de vida\n')
+        barra_personagem = "█" * int(vida // 5) + "░" * int((160 - vida) // 5)
+        print(f"\n{nome}: {vida:>4} HP |{barra_personagem}|")      
+
     def ataque_inimigo(self):
         self.personagem_escolhido.vida = (self.personagem_escolhido.vida - self.inimigo_escolhido.dano)
         if self.personagem_escolhido.vida < 0:
             self.personagem_escolhido.vida = 0
-        print(f'{self.inimigo_escolhido.nome} te atacou! você ficou com {self.personagem_escolhido.vida} de vida\n')
-        barra_personagem = "█" * int(self.personagem_escolhido.vida // 5) + "░" * int((160 - self.personagem_escolhido.vida) // 5)
-        print(f"\n{self.personagem_escolhido.nome}: {self.personagem_escolhido.vida:>4} HP |{barra_personagem}|")
+        Luta.barra_vida(self, self.personagem_escolhido.nome, self.personagem_escolhido.vida, self.inimigo_escolhido.nome)
+
+     
 
     def drop(self):
         
@@ -155,6 +169,9 @@ Seu inventario:
 3- Spray - Você possui: {self.personagem_escolhido.inventario.count('Spray')}
 4- Estamina - Você possui: {self.personagem_escolhido.inventario.count('Estamina')}
 5- Barra de proteína - Você possui: {self.personagem_escolhido.inventario.count('Barra de proteína')}
+6- 
+7- Granada de luz - Você possui: {self.personagem_escolhido.inventario.count('Granada de luz')}
+8- Carregador estendido - Você possui: {self.personagem_escolhido.inventario.count('Carregador estendido')}
             '''))
                                         
         
@@ -176,6 +193,15 @@ Seu inventario:
             elif menu == 5 and self.personagem_escolhido.inventario.count('Barra de proteína') >= 1:
                 Luta.especial(Luta)
                 self.personagem_escolhido.inventario.remove('Barra de proteína')
+            elif menu == 6 and self.personagem_escolhido.inventario.count('Granada de mão') >=1:
+                Inventario.granada_de_mao(self)
+                self.personagem_escolhido.inventario.remove('Granada de mão')
+            elif menu == 7 and self.personagem_escolhido.inventario.count('Granada de luz') >=1:
+                Inventario.granada_luz(self) 
+                self.personagem_escolhido.inventario.remove('Granada de luz')
+            elif menu == 8 and self.personagem_escolhido.inventario.count('Carregador estendido') >=1:
+                Inventario.carregador_estendido(self) 
+                self.personagem_escolhido.inventario.remove('Carregador estendido')      
             else:
                 print('Você não possui este consumivel')     
         except:  print('Escolha uma opção válida')
@@ -210,9 +236,9 @@ Seu inventario:
                         time.sleep(0.5)
                     elif especial > 15:
                         luta.especial()
-                        luta.ataque_normal()
+                        luta.ataque_normal(1)
                     else:
-                        luta.ataque_normal()
+                        luta.ataque_normal(1)
                         
                     luta.ataque_inimigo()
                 if self.inimigo_escolhido.vida <= 0:
@@ -230,7 +256,7 @@ Seu inventario:
                 elif opcoes == 2:
                     os.system('cls')
                     Luta.usar_consumivel(Luta)
-        except: print('Escolha uma opção Válida')
+        except Exception as e: print(f'Esse é o Erro: {e}')
     def menu():
         input('''
 RPG Resident evil
@@ -254,10 +280,11 @@ ENTER para iniciar uma nova luta
     hunk = Herois('Hunk', 'Metralhadora', 16, 150, 'Chance de dar um hit kill', 0, 0)    
     jill_valentine = Herois('Jill Valentine', 'Assalto', 14, 150, 'Quanto menos vida, mais dano', 0, 0)
     personagem_escolhido = Herois('a','a',0,0,'a', 0, 0)
+    wesker = Herois('Wesker', 'Katana', 19, 180, 'Ataque triplicado', 0, 0)
     #-
     claire_redfield = Herois('Claire Redfield', 'Revolver', 15, 155, '', 0, 0)#Veneno/Sangramento contínuo
     rebecca_chambers = Herois('Rebecca Chambers', 'Rifle', 13, 125, '', 0, 0)    
-    wesker = Herois('Wesker', 'Katana', 19, 180, '', 0, 0)
+    
     #-
     inimigos_1 = Inimigo('Walker','Mão',10, 60,'normal', 0)
     inimigos_2 = Inimigo('Cultista','Foice',15, 80,'normal', 0)
