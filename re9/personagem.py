@@ -5,7 +5,7 @@ class Personagem(ABC):
         self.nome = nome
         self.equipamento = equipamento
         self.dano = dano
-        self.vida = vida
+        self.vida = int(vida)
         self.nivel = nivel
 
     @abstractmethod

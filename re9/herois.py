@@ -12,7 +12,16 @@ class Herois(Personagem):
         self.inventario = ['Erva verde','Erva amarela','Spray','Estamina','Barra de proteína']
 
     def __str__(self):
-        return (f'Nome: {self.nome} \nEquipamento: {self.equipamento} \nDano: {self.dano} \nVida: {self.vida} \nEspecial: {self.especial}')    
+        return (f'''
+======================================================
+ 👤 PERSONAGEM: {self.nome}
+======================================================
+ 🔫  EQUIP: {self.equipamento}      ❤️  VIDA: {self.vida}
+ ⚔️  DANO:  {self.dano}              🛡️  ESP: {self.especial}
+======================================================
+
+''')
+            
 
 
     def exibir_status(self,vida_maxima):
@@ -39,8 +48,8 @@ class Herois(Personagem):
         XP_necessario = 1000 + (self.nivel * 200)
         if self.experiencia >= XP_necessario:
             self.nivel += 1
-            self.dano = self.dano + (self.dano * 0.1)
-            self.vida = self.vida + (self.vida * 0.1)
+            self.dano = self.dano + (self.dano * 1.4)
+            self.vida = self.vida + (self.vida * 1.6)
             self.experiencia -= XP_necessario
             print(f'{'\033[92m'}Parabéns! {self.nome} subiu para o nível {self.nivel}!{'\033[0m'}')
             time.sleep(0.5)
@@ -62,4 +71,7 @@ class Herois(Personagem):
         Chefes mortos: {kill_boss}
         ''')
         time.sleep(0.5)
-            
+
+
+
+        

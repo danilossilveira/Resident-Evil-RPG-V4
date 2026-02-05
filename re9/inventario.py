@@ -24,7 +24,7 @@ class Inventario(Luta):
 
     def estamina(self):
         Luta.dano_critico(Luta)
-                                #A gente tem que polir o jogo antes, arrumar todas as strings e tratar todos os erros
+                                #
                                 
         
     def barra_proteina():

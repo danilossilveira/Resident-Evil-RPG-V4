@@ -8,11 +8,10 @@ class Inimigo(Personagem):
         super().__init__(nome,equipamento,dano, vida,nivel)
         self.tipo = tipo
         self.nivel = random.randint(1,10)
-        self.dano = 20
-                        #(dano + (self.nivel * 4))
-        self.vida = 50
-                        #(vida + (self.nivel * 2))
+        self.dano = (dano + (self.nivel * 1.2))
+        self.vida = (vida + (self.nivel * 1.4))
     
+                        
     def __str__(self):
         return f'{self.nivel} | {self.dano} | {self.vida}'
 
