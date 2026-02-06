@@ -1,5 +1,4 @@
 import time
-import random
 
 from cores import Cores
 from personagem import Personagem
@@ -28,10 +27,15 @@ class Herois(Personagem):
     def exibir_status(self,vida_maxima):
         vida = int(vida_maxima)
         XP_necessario = 1000 + (self.nivel * 200)
-        print(f'|♡ Vida {round(self.vida,1)}/{vida}')
-        print(f'|☆ Nivel {self.nivel}')
-        print(f'|♦ Experiência {self.experiencia}/{XP_necessario}')
-        input('\nPrecione a tecla "Enter ⏎" para continuar...\n')
+        print(f'''
+ ___________________________________
+|[STATUS ATUAL]              
+|❤️ Vida {round(self.vida,1)}/{vida}
+|⭐ Nivel {self.nivel}
+|❇️ Experiência {self.experiencia}/{XP_necessario}
+|___________________________________
+''')    
+        input('Precione a tecla "[Enter] ⏎" para continuar...\n')
         time.sleep(0.5)
 
     def contador_kills(tipo_inimigo):
@@ -73,3 +77,6 @@ class Herois(Personagem):
         Chefes mortos: {kill_boss}
         ''')
         time.sleep(0.5)
+
+    def nivel_heroi (self):
+        return self.nivel

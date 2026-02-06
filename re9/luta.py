@@ -1,16 +1,12 @@
 import random
 import time
 import os
-from collections import Counter
+from comentarios import Comentarios
 from inimigo import Inimigo
 from herois import Herois
 from cores import Cores
 
 class Luta():
-
-    def __str__(self):
-        return (f'Nome: {self.nome} \nEquipamento: {self.equipamento} \nDano: {self.dano} \nVida: {self.vida} \nEspecial: {self.especial}')
-
     def voltar_menu():
         print('Opção inválida')
         input('ENTER para voltar')
@@ -47,24 +43,43 @@ class Luta():
                     
     
     def escolher_inimigo(self):
+        
+        
+        
+        equipamento_inimigo = random.randint(0,4)
+        nome = ['Ganado','Javo','Cultista','Chrysalid','Walker']
+        nome_inimigo = random.randint(0,4)
+        vida = [35, 40, 50, 60, 65]
+        vida_inimigo = random.randint(0,4)
+        dano = [15, 17, 20, 25, 30]
+        dano_inimigo = random.randint(0,4)
+        
+        equipamento = ['Punho','machado','Madeira','Facão','Foice',]
+        inimigo = Inimigo(nome[nome_inimigo], equipamento[equipamento_inimigo],dano[dano_inimigo],vida[vida_inimigo],   'normal', 0)
+        
+
+
+        # normal | 0
+
         numero_inimigo = int(random.randint(1,12))
         inimigos = {
             1: self.nemesis,
             2: self.mr_x,
-            3: self.inimigos_1,
-            4: self.inimigos_2,
-            5: self.inimigos_3,
-            6:self.inimigos_1,
-            7:self.inimigos_3,
-            8:self.inimigos_2,
-            9:self.inimigos_3,
-            10:self.inimigos_2,
-            11:self.inimigos_1,
-            12:self.inimigos_1
+            3: inimigo,
+            4: inimigo,
+            5: inimigo,
+            6: inimigo,
+            7: inimigo,
+            8: inimigo,
+            9: inimigo,
+            10: inimigo,
+            11: inimigo,
+            12: inimigo
             }
         self.inimigo_escolhido.__dict__.update(inimigos[numero_inimigo].__dict__)
-        print(f' ⚠️  {self.inimigo_escolhido.nome} LEVEL({self.inimigo_escolhido.nivel}) VAI ATACAR! \n')
-
+        Inimigo.determir_nivel(self.inimigo_escolhido, self.personagem_escolhido.nivel)
+        Comentarios.mensagem_inimigo_proximo(self, self.inimigo_escolhido.nome, self.inimigo_escolhido.equipamento, self.inimigo_escolhido.nivel)
+        
     def especial(self):
 
             if self.personagem_escolhido.nome == self.ethan.nome:
@@ -113,36 +128,61 @@ class Luta():
                 time.sleep(0.5)
                 print(f'{Cores.AZUL} Ataque transversal {Cores.RESET}')
 
-                
+    def barra_vida(self,vida):
+        
+        barra_personagem = "█" * int(vida // 5) + "░" * int((160 - vida) // 5)
+        print(f" HP {vida:>4} HP |{barra_personagem}|")
+
+
     def dano_critico(self):
-            dano_critico = 0
-            dano_critico = round((self.personagem_escolhido.dano + self.personagem_escolhido.dano * 1.5),1)
-            if self.inimigo_escolhido.vida < 0:
-                self.inimigo_escolhido.vida = 0
-            self.inimigo_escolhido.vida = (self.inimigo_escolhido.vida - dano_critico)
-            print(f'{Cores.VERMELHO}CRITICO🔥! Você deu {dano_critico} de dano no {self.inimigo_escolhido.nome}. Ele ficou com {self.inimigo_escolhido.vida} de vida{Cores.RESET}\n')
-            barra_inimigo = "█" * int(self.inimigo_escolhido.vida // 5) + "░" * int((50 - self.inimigo_escolhido.vida) // 5)
-            print(f"\n{self.inimigo_escolhido.nome}: {self.inimigo_escolhido.vida:>4} HP |{barra_inimigo}|")
-   
+        dano_critico = 0
+        dano_critico = round((self.personagem_escolhido.dano + self.personagem_escolhido.dano * 1.5),1)
+        if self.inimigo_escolhido.vida < 0:
+            self.inimigo_escolhido.vida = 0
+        self.inimigo_escolhido.vida = (self.inimigo_escolhido.vida - dano_critico)
+        mensagemm = Comentarios.mensagem_dano_critico(self, self.inimigo_escolhido.nome, )    
+        Luta.log_batalha(self, mensagemm)
+
+
+
     def ataque_normal(self,modificador_dano):               
         self.inimigo_escolhido.vida = (self.inimigo_escolhido.vida - (self.personagem_escolhido.dano * modificador_dano))
         if self.inimigo_escolhido.vida < 0:
             self.inimigo_escolhido.vida = 0
-        print(f'Você atacou o {self.inimigo_escolhido.nome}\n')               
-        barra_inimigo = "█" * int(self.inimigo_escolhido.vida // 5) + "░" * int((50 - self.inimigo_escolhido.vida) // 5)
-        print(f"\n{self.inimigo_escolhido.nome}: {self.inimigo_escolhido.vida:>4} HP |{barra_inimigo}|")
-    def barra_vida(self, nome, vida, inimigo):
-        print(f'{inimigo} te atacou! você ficou com {vida} de vida\n')
-        barra_personagem = "█" * int(vida // 5) + "░" * int((160 - vida) // 5)
-        print(f"\n{nome}: {vida:>4} HP |{barra_personagem}|")      
+        mensagemm = Comentarios.mensagem_ataque_heroi(self, self.inimigo_escolhido.nome,self.personagem_escolhido.equipamento)
+        Luta.log_batalha(self, mensagemm)
 
+
+    
+    
     def ataque_inimigo(self):
         self.personagem_escolhido.vida = (self.personagem_escolhido.vida - self.inimigo_escolhido.dano)
         if self.personagem_escolhido.vida < 0:
             self.personagem_escolhido.vida = 0
-        Luta.barra_vida(self, self.personagem_escolhido.nome, self.personagem_escolhido.vida, self.inimigo_escolhido.nome)
+        #mensagem = 'inimigo atacou'#Comentarios.mensage_ataque_inimigo(self, self.personagem_escolhido.dano, self.inimigo_escolhido.nivel)
+        #Luta.log_batalha(self, mensagem)
 
-     
+
+    def log_batalha(self, mensagem):
+        heroi = self.personagem_escolhido
+        inimigo = self.inimigo_escolhido
+        print('[ JOGADOR ]')
+        print(self.personagem_escolhido.nome)
+        Luta.barra_vida(self, self.personagem_escolhido.vida)
+        print('''
+------------------------------------------------------------
+                     LOG DE BATALHA                         
+------------------------------------------------------------''')
+        print(mensagem)
+        print(f'Dano causado: {heroi.dano}')
+        print(mensagem)
+        print(f'Dano recebido: {inimigo.dano}')
+        print('------------------------------------------------------------')
+        #Comentarios.mensagem_ataque_heroi(self, self.inimigo_escolhido.nome, self.personagem_escolhido.equipamento)               
+        print('[ INIMIGO ]')
+        print(self.inimigo_escolhido.nome)
+        Luta.barra_vida(self, self.personagem_escolhido.vida)
+
 
     def drop(self):
         
@@ -155,7 +195,7 @@ class Luta():
     } 
         drop = random.randint(1,5)
         self.personagem_escolhido.inventario.append(consumiveis[drop])
-        print(f'{Cores.AZUL} O {self.inimigo_escolhido.nome} dropou um {consumiveis[drop] } {Cores.RESET}')      
+        print(f'{Cores.AZUL} DROP: {consumiveis[drop] } {Cores.RESET}')      
 
 
 
@@ -209,7 +249,7 @@ Seu inventario:
          
         
     def luta(self):
-        try:
+        #try:
             #Fazer isso em tudo depois
             luta = Luta()
             heroi = self.personagem_escolhido
@@ -228,6 +268,11 @@ Seu inventario:
     '''))
                 if opcoes == 1:
                     os.system('cls')
+                    print('''
+============================================================
+                     Fase de Combate                        
+============================================================
+''')
                     critico = random.randint(1,20) 
                     especial = random.randint(1,20)          
                     time.sleep(0.5)
@@ -242,7 +287,11 @@ Seu inventario:
                         
                     luta.ataque_inimigo()
                 if self.inimigo_escolhido.vida <= 0:
-                    print(f'{Cores.VERDE}Você Ganhou! 👌{Cores.RESET}\n')
+                    print(f'''
+____________________________________________________
+{Cores.VERDE}Você Ganhou! 👌{Cores.RESET}
+____________________________________________________
+''')
                     contador_kills.append(Herois.contador_kills(self.inimigo_escolhido.tipo))
                     
                     Luta.drop(Luta)
@@ -256,7 +305,7 @@ Seu inventario:
                 elif opcoes == 2:
                     os.system('cls')
                     Luta.usar_consumivel(Luta)
-        except Exception as e: print(f'Esse é o Erro: {e}')
+        #except Exception as e: print(f'Esse é o Erro: {e}')
     def menu():
         input('''
 RPG Resident evil
@@ -286,11 +335,8 @@ ENTER para iniciar uma nova luta
     rebecca_chambers = Herois('Rebecca Chambers', 'Rifle', 13, 125, '', 0, 0)    
     
     #-
-    inimigos_1 = Inimigo('Walker','Mão',10, 60,'normal', 0)
-    inimigos_2 = Inimigo('Cultista','Foice',15, 80,'normal', 0)
-    inimigos_3 = Inimigo('Lobo','Mordida',17, 70,'normal', 0) 
     inimigo_escolhido = Inimigo('a','a',0, 0,'a',0)
-    inimigo_aleatorio = Inimigo('a','a',0,0,'a',0)
+
     
 def main():
     Luta.luta(Luta)
