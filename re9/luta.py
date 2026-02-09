@@ -133,7 +133,6 @@ class Luta():
         barra_personagem = "█" * int(vida // 5) + "░" * int((160 - vida) // 5)
         print(f" HP {vida:>4} HP |{barra_personagem}|")
 
-
     def dano_critico(self):
         dano_critico = 0
         dano_critico = round((self.personagem_escolhido.dano + self.personagem_escolhido.dano * 1.5),1)
@@ -256,7 +255,6 @@ Seu inventario:
             inimigo = self.inimigo_escolhido
             luta.escolher_personagem()
             luta.escolher_inimigo()
-            vida_personagem = self.personagem_escolhido.vida
             contador_kills = []
             
             while True:
@@ -295,9 +293,9 @@ ____________________________________________________
                     contador_kills.append(Herois.contador_kills(self.inimigo_escolhido.tipo))
                     
                     Luta.drop(Luta)
-                    Herois.ganhar_experiencia(self.personagem_escolhido,self.inimigo_escolhido.nivel)
+                    Herois.ganhar_experiencia(self.personagem_escolhido,self.inimigo_escolhido.nivel,self.inimigo_escolhido.tipo)
                     Herois.subir_level(self.personagem_escolhido)
-                    Herois.exibir_status(self.personagem_escolhido,vida_personagem)
+                    Herois.exibir_status(self.personagem_escolhido)
                     Luta.escolher_inimigo(Luta)           
                 if self.personagem_escolhido.vida <= 0:
                     Herois.tela_de_morte(self.personagem_escolhido,contador_kills)          
@@ -322,17 +320,17 @@ ENTER para iniciar uma nova luta
     nemesis = Inimigo('Nemesis','Lança míssil', 25, 150 ,'boss', 0)
     mr_x = Inimigo('Mister X','Soco', 30, 140,'boss' , 0)
     #-
-    leon_kennedy = Herois('Leon', 'Pistola',15,150, 'Desvia de ataques', 0, 0)
-    chris_redfield = Herois('Chirs', 'Sub-metralhadora',17 ,135, 'Chance de crítico aumenta', 0, 0)
-    ethan = Herois('Ethan', 'Shotgun',12, 170,'Regenera vida', 0, 0)
-    ada_wong = Herois('Ada Wong', 'Balestra' ,14 , 145,'Dano multiplicado', 0, 0)
-    hunk = Herois('Hunk', 'Metralhadora', 16, 150, 'Chance de dar um hit kill', 0, 0)    
-    jill_valentine = Herois('Jill Valentine', 'Assalto', 14, 150, 'Quanto menos vida, mais dano', 0, 0)
-    personagem_escolhido = Herois('a','a',0,0,'a', 0, 0)
-    wesker = Herois('Wesker', 'Katana', 19, 180, 'Ataque triplicado', 0, 0)
+    leon_kennedy = Herois('Leon', 'Pistola',15,150,150, 'Desvia de ataques', 0, 0)
+    chris_redfield = Herois('Chirs', 'Sub-metralhadora',17 ,135,135, 'Chance de crítico aumenta', 0, 0)
+    ethan = Herois('Ethan', 'Shotgun',12,170, 170,'Regenera vida', 0, 0)
+    ada_wong = Herois('Ada Wong', 'Balestra' ,14 ,145 ,145,'Dano multiplicado', 0, 0)
+    hunk = Herois('Hunk', 'Metralhadora', 16,150, 150, 'Chance de dar um hit kill', 0, 0)    
+    jill_valentine = Herois('Jill Valentine', 'Assalto', 14,150, 150, 'Quanto menos vida, mais dano', 0, 0)
+    personagem_escolhido = Herois('a','a',0,0,0,'a', 0, 0)
+    wesker = Herois('Wesker', 'Katana', 19, 180,180, 'Ataque triplicado', 0, 0)
     #-
-    claire_redfield = Herois('Claire Redfield', 'Revolver', 15, 155, '', 0, 0)#Veneno/Sangramento contínuo
-    rebecca_chambers = Herois('Rebecca Chambers', 'Rifle', 13, 125, '', 0, 0)    
+    claire_redfield = Herois('Claire Redfield', 'Revolver', 15,155, 155, '', 0, 0)#Veneno/Sangramento contínuo
+    rebecca_chambers = Herois('Rebecca Chambers', 'Rifle', 13,125, 125, '', 0, 0)    
     
     #-
     inimigo_escolhido = Inimigo('a','a',0, 0,'a',0)

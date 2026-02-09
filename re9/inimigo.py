@@ -17,7 +17,7 @@ class Inimigo(Personagem):
         return f'{self.nivel} | {self.dano} | {self.vida}'
 
     def tela_de_morte(self):
-        print(f'Olha o beta 😂👉({self.nome}) foi todo mogado ahaha!, foi obliterado ahahahahaha!')
+        print(f'Você olha enquanto {self.nome} se desfaz no chão')
         time.sleep(0.5)
 
     def determir_nivel(self,nivel_heroi):
